@@ -8,8 +8,8 @@ provider "helm" {
   }
 }
 
-provider "keycloak" {
-    client_id = "admin-cli"
-    username = var.keycloak_username
+# provider "keycloak" {
+#     client_id = "admin-cli"
+#     username = var.keycloak_username
   
-}
+# }

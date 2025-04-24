@@ -1,3 +1,5 @@
-variable "keycloak_username" {
-  
+
+variable "infra-namespace" {
+    type    = string
+    default = "infra"
 }
