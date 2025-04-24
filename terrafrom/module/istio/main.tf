@@ -1,5 +1,6 @@
 locals {
   istio_charts_url = "https://istio-release.storage.googleapis.com/charts"
+  istio_version = "1.24.5"
 }
 
 #ISTIO Main
@@ -8,7 +9,7 @@ resource "helm_release" "istio-base" {
   chart            = "base"
   name             = "istio-base"
   namespace        = var.istio-namespace
-  version          = "1.12.1"
+  version          = local.istio_version
   create_namespace = true
 }
 
@@ -18,7 +19,7 @@ resource "helm_release" "istiod" {
   name             = "istiod"
   namespace        = var.istio-namespace
   create_namespace = true
-  version          = "1.12.1"
+  version          = local.istio_version
   depends_on       = [helm_release.istio-base]
 }
 
@@ -37,6 +38,6 @@ resource "helm_release" "istio-ingress" {
   chart      = "gateway"
   name       = "istio-ingress"
   namespace  = kubernetes_namespace.istio-ingress-label.id
-  version    = "1.12.1"
+  version    = local.istio_version
   depends_on = [helm_release.istiod]
 }
