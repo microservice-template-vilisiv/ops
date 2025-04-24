@@ -1,28 +1,38 @@
-version: '3.8'
+# version: '3.8'
 
 services:
   postgres-keycloak:
     image: postgres:16.8
     container_name: postgres-keycloak
     environment:
-      POSTGRES_DB: keycloak
-      POSTGRES_USER: keycloak_user
-      POSTGRES_PASSWORD: keycloak_pw
+      POSTGRES_DB: ${POSTGRES_KEYCLOAK_DB}
+      POSTGRES_USER: ${POSTGRES_KEYCLOAK_USER} 
+      POSTGRES_PASSWORD: ${POSTGRES_KEYCLOAK_PW}
     volumes:
       - ./volumes/keycloak-data:/var/lib/postgresql/data
       - ./init/keycloak:/docker-entrypoint-initdb.d
     ports:
       - "5433:5432"
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U \"$POSTGRES_KEYCLOAK_USER\"  -d \"$POSTGRES_KEYCLOAK_DB\""]
+      interval: 5s
+      timeout: 5s
+      retries: 5
 
   postgres-app:
     image: postgres:16.8
     container_name: postgres-app
     environment:
-      POSTGRES_DB: appdb
-      POSTGRES_USER: app_user
-      POSTGRES_PASSWORD: app_pw
+      POSTGRES_DB: ${POSTGRES_APP_DB}
+      POSTGRES_USER: ${POSTGRES_APP_USER}
+      POSTGRES_PASSWORD: ${POSTGRES_APP_PW}
     volumes:
       - ./volumes/app-data:/var/lib/postgresql/data
       - ./init/app:/docker-entrypoint-initdb.d
     ports:
       - "5434:5432"
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U \"$POSTGRES_APP_USER\" -d \"$POSTGRES_APP_DB\""]
+      interval: 5s
+      timeout: 5s
+      retries: 5
