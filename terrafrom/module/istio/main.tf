@@ -11,7 +11,7 @@ resource "helm_release" "istio-base" {
   repository       = local.istio_charts_url
   chart            = "base"
   name             = "istio-base"
-  namespace        = var.istio-namespace
+  namespace        = var.namespace
   version          = local.istio_version
   create_namespace = true
 }
@@ -20,7 +20,7 @@ resource "helm_release" "istiod" {
   repository       = local.istio_charts_url
   chart            = "istiod"
   name             = "istiod"
-  namespace        = var.istio-namespace
+  namespace        = var.namespace
   create_namespace = true
   version          = local.istio_version
   depends_on       = [helm_release.istio-base]
@@ -121,8 +121,8 @@ resource "kubernetes_manifest" "jwt_auth" {
       jwtRules = [
         {
           # @todo: edit realms name with actual running realms
-          issuer = "http://keycloak.keycloak.svc.cluster.local/realms/myrealm"
-          jwksUri = "http://keycloak.keycloak.svc.cluster.local/realms/myrealm/protocol/openid-connect/certs"
+          issuer = "http://keycloak.${var.keycloak-namespace}.svc.cluster.local/realms/${var.keycloak-realm}"
+          jwksUri = "http://keycloak.${var.keycloak-namespace}.svc.cluster.local/realms/${var.keycloak-realm}/protocol/openid-connect/certs"
         }
       ]
     }

@@ -1,9 +1,9 @@
 module "keycloak" {
   source = "./module/keycloak"
-
-  namespace = var.infra-namespace
 }
 
 module "istio" {
   source = "./module/istio"
+  keycloak-namespace = module.keycloak.keycloak-namespace
+  keycloak-realm = module.keycloak.keycloak-realm
 }

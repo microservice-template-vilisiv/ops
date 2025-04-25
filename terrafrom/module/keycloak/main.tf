@@ -8,10 +8,16 @@ locals {
 
 resource "helm_release" "keycloak" {
   repository = local.keycloak_charts_url
-  chart = "keycloak"
-  name = "keycloak"
+  chart     = "keycloak"
+  name      = "keycloak"
   namespace = var.namespace
 
   values = [file("values.yaml")]
 
+}
+
+resource "keycloak_realm" "apprealm" {
+  realm     = "apprealm"
+  enable    = true
+  depends_on = [ helm_release.keycloak ]
 }
