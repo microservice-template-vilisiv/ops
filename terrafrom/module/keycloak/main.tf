@@ -12,12 +12,12 @@ resource "helm_release" "keycloak" {
   name      = "keycloak"
   namespace = var.namespace
 
-  values = [file("values.yaml")]
+  values = [file("${path.module}/values.yaml")]
 
 }
 
 resource "keycloak_realm" "apprealm" {
-  realm     = "apprealm"
-  enable    = true
+  realm      = "apprealm"
+  enabled    = true
   depends_on = [ helm_release.keycloak ]
 }
