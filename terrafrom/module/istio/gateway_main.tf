@@ -1,54 +1,22 @@
-locals {
-  istio_charts_url = "https://istio-release.storage.googleapis.com/charts"
-  istio_version = "1.24.5"
-}
-
-#----------------------------------------------
-#istio config
-#----------------------------------------------
-
-resource "helm_release" "istio-base" {
-  repository       = local.istio_charts_url
-  chart            = "base"
-  name             = "istio-base"
-  namespace        = var.namespace
-  version          = local.istio_version
-  create_namespace = true
-}
-
-resource "helm_release" "istiod" {
-  repository       = local.istio_charts_url
-  chart            = "istiod"
-  name             = "istiod"
-  namespace        = var.namespace
-  create_namespace = true
-  version          = local.istio_version
-  depends_on       = [helm_release.istio-base]
-}
-
-resource "kubernetes_namespace" "istio-ingress" {
-  metadata {
-    labels = {
-      istio-injection = "enabled"
-    }
-
-    name = "istio-ingress"
-  }
-}
-
-resource "helm_release" "istio-ingress" {
-  repository = local.istio_charts_url
-  chart      = "gateway"
-  name       = "istio-ingress"
-  namespace  = kubernetes_namespace.istio-ingress.metadata[0].name
-  version    = local.istio_version
-  depends_on = [helm_release.istiod]
-}
-
-
 #----------------------------------------------
 # gateway config
 #----------------------------------------------
+resource "null_resource" "wait_for_gateway_crd" {
+  provisioner "local-exec" {
+    command = <<EOT
+      for i in {1..30}; do
+        kubectl get crd gateways.networking.istio.io && exit 0
+        echo "Waiting for Gateway CRD..."
+        sleep 5
+      done
+      echo "Timed out waiting for Gateway CRD" >&2
+      exit 1
+    EOT
+  }
+
+  depends_on = [helm_release.istio-ingress]
+}
+
 resource "kubernetes_manifest" "gateway" {
   manifest = {
     apiVersion = "networking.istio.io/v1beta1"
@@ -73,6 +41,8 @@ resource "kubernetes_manifest" "gateway" {
       ]
     }
   }
+  
+  depends_on = [ null_resource.wait_for_gateway_crd ]
 }
 
 resource "kubernetes_manifest" "virtual_service" {
@@ -98,6 +68,8 @@ resource "kubernetes_manifest" "virtual_service" {
       ]
     }
   }
+
+  depends_on = [ null_resource.wait_for_gateway_crd ]
 }
 
 
@@ -127,6 +99,8 @@ resource "kubernetes_manifest" "jwt_auth" {
       ]
     }
   }
+
+  depends_on = [ null_resource.wait_for_gateway_crd ]
 }
 
 resource "kubernetes_manifest" "auth_policy" {
@@ -157,4 +131,5 @@ resource "kubernetes_manifest" "auth_policy" {
     }
   }
   
+  depends_on = [ null_resource.wait_for_gateway_crd ]
 }
