@@ -8,5 +8,5 @@ variable "keycloak-namespace" {
 }
 
 variable "keycloak-realm" {
-  
+  type = string
 }
