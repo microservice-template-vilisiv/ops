@@ -1,0 +1,33 @@
+apiVersion: v1
+kind: Pod
+metadata:
+  name: terraform
+  labels:
+    app: terraform
+spec:
+  initContainers:
+    - name: git-clone
+      image: alpine/git
+      command: ["git", "clone", "https://github.com/microservice-template-vilisiv/ops.git", "/workspace"]
+      volumeMounts:
+        - name: terraform-workspace
+          mountPath: /workspace
+
+  containers:
+    - name: terraform
+      image: hashicorp/terraform:latest
+      command:
+        - sleep
+        - "3600"
+      volumeMounts:
+        - name: terraform-workspace
+          mountPath: /workspace
+        - name: kubeconfig
+          mountPath: /root/.kube
+
+  volumes:
+    - name: terraform-workspace
+      emptyDir: {}
+    - name: kubeconfig
+      configMap:
+        name: kubeconfig

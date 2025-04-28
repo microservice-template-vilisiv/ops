@@ -2,6 +2,7 @@
 #istio config
 #----------------------------------------------
 locals {
+  # istio_charts_url = "https://istio-release.storage.googleapis.com/charts"
   istio_charts_url = "https://istio-release.storage.googleapis.com/charts"
   istio_version = "1.24.5"
 }

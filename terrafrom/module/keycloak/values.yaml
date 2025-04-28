@@ -5,7 +5,7 @@
 postgresql:
   enabled: false  # Disable internal DB
 externalDatabase:
-  host: 172.17.0.1
+  host: "192.168.64.131"
   port: 5433
   user: keycloak_user
   password: keycloak_pw

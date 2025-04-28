@@ -3,7 +3,8 @@
 #-------------------------
 
 locals {
-  keycloak_charts_url = "https://charts.bitnami.com/bitnami"
+  # keycloak_charts_url = "https://charts.bitnami.com/bitnami"
+  keycloak_charts_url = "oci://registry-1.docker.io/bitnamicharts/keycloak"
 }
 
 resource "helm_release" "keycloak" {
@@ -16,8 +17,8 @@ resource "helm_release" "keycloak" {
 
 }
 
-resource "keycloak_realm" "apprealm" {
-  realm      = "apprealm"
-  enabled    = true
-  depends_on = [ helm_release.keycloak ]
-}
+# resource "keycloak_realm" "apprealm" {
+#   realm      = "apprealm"
+#   enabled    = true
+#   depends_on = [ helm_release.keycloak ]
+# }
