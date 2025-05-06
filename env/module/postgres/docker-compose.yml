@@ -9,8 +9,9 @@ services:
       POSTGRES_USER: ${POSTGRES_KEYCLOAK_USER} 
       POSTGRES_PASSWORD: ${POSTGRES_KEYCLOAK_PW}
     volumes:
-      - ./volumes/keycloak-data:/var/lib/postgresql/data
-      - ./init/keycloak:/docker-entrypoint-initdb.d
+      - ./config/postgresql.conf:/etc/postgresql/postgresql.conf
+      - ./config/pg_hba.conf:/etc/postgresql/pg_hba.conf
+      - pgdata-keycloak:/var/lib/postgresql/data
     ports:
       - ${POSTGRES_KEYCLOAK_PORT}
     healthcheck:
@@ -27,8 +28,7 @@ services:
       POSTGRES_USER: ${POSTGRES_APP_USER}
       POSTGRES_PASSWORD: ${POSTGRES_APP_PW}
     volumes:
-      - ./volumes/app-data:/var/lib/postgresql/data
-      - ./init/app:/docker-entrypoint-initdb.d
+      - pgdata-app:/var/lib/postgresql/data
     ports:
       - ${POSTGRES_APP_PORT}
     healthcheck:
@@ -36,3 +36,8 @@ services:
       interval: 5s
       timeout: 5s
       retries: 5
+
+# define named volumes
+volumes:
+  pgdata-keycloak:
+  pgdata-app:
