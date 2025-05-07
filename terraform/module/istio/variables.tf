@@ -3,10 +3,10 @@ variable "namespace" {
     default = "istio-system"
 }
 
-variable "keycloak-namespace" {
-    type    = string
-}
+# variable "keycloak-namespace" {
+#     type    = string
+# }
 
-variable "keycloak-realm" {
-  type = string
-}
+# variable "keycloak-realm" {
+#   type = string
+# }

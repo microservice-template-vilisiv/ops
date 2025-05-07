@@ -1,7 +1,7 @@
-output "keycloak-namespace" {
-  value = var.namespace
-}
+# output "keycloak-namespace" {
+#   value = var.namespace
+# }
 
-output "keycloak-realm" {
-  value = var.realm
-}
+# output "keycloak-realm" {
+#   value = var.realm
+# }

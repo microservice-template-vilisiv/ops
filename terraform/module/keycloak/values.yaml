@@ -2,15 +2,15 @@
 # Set database configuration for keycloak host
 # ---------------------------------------------------
 
-postgresql:
-  enabled: false  # Disable internal DB
-externalDatabase:
-  host: "192.168.64.131"
-  port: 5433
-  user: keycloak_user
-  password: keycloak_pw
-  database: keycloak
+# postgresql:
+#   enabled: false  # Disable internal DB
+# externalDatabase:
+#   host: "192.168.64.131"
+#   port: 5433
+#   user: keycloak_user
+#   password: keycloak_pw
+#   database: keycloak
 
-auth:
-  adminUser: admin
-  adminPassword: admin
+# auth:
+#   adminUser: admin
+#   adminPassword: admin

@@ -1,9 +1,9 @@
-variable "namespace" {
-  type = string
-  default = "keycloak-system"
-}
+# variable "namespace" {
+#   type = string
+#   default = "keycloak-system"
+# }
 
-variable "realm" {
-  type = string
-  default = "keycloak-realm"
-}
+# variable "realm" {
+#   type = string
+#   default = "keycloak-realm"
+# }

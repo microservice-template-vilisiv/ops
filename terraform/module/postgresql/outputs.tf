@@ -1,7 +1,7 @@
 output "keycloak_db_host" {
-  value = "postgres-keycloak-postgresql.default.svc.cluster.local"
+  value = "postgres-keycloak-postgresql.database.svc.cluster.local"
 }
 
 output "app_db_host" {
-  value = "postgres-app-postgresql.default.svc.cluster.local"
+  value = "postgres-app-postgresql.database.svc.cluster.local"
 }

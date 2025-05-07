@@ -1,9 +1,16 @@
 #-------------------------
 # Postgres Main
 #-------------------------
+resource "kubernetes_namespace" "database" {
+  metadata {
+    name = "database"
+  }
+}
 
 locals {
-  repository = "https://charts.bitnami.com/bitnami"
+  # repository = "https://charts.bitnami.com/bitnami"
+  repository = "oci://registry-1.docker.io/bitnamicharts"
+  version   = "16.6.6"
   namespace = "database"
 
   authPostgresPassword = "auth.postgresPassword"
@@ -18,10 +25,11 @@ resource "helm_release" "postgres_keycloak" {
   name = "postgres-keycloak"
   repository = local.repository
   chart = "postgresql"
-  namespace = local.namespace
+  version = local.version
+  namespace = kubernetes_namespace.database.metadata[0].name
   
   set {
-    name = locals.database
+    name = local.authDatabase
     value = "keycloak_db"
   }
 
@@ -56,10 +64,11 @@ resource "helm_release" "postgres_app" {
   name = "postgres-app"
   repository = local.repository
   chart = "postgresql"
-  namespace = local.namespace
+  version = local.version
+  namespace = kubernetes_namespace.database.metadata[0].name
   
   set {
-    name = locals.database
+    name = local.authDatabase
     value = "app_db"
   }
 
