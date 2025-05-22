@@ -27,8 +27,8 @@ services:
       # KC_PROXY: edge
       KEYCLOAK_ADMIN: admin
       KEYCLOAK_ADMIN_PASSWORD: admin
-    # ports:
-      # - "8080:8080"  # Host port -> Container port
+    ports:
+      - "8080:8080"  # Host port -> Container port
     depends_on:
       - postgres
     restart: always
@@ -42,5 +42,3 @@ volumes:
 networks:
   internal:
     driver: bridge
-  tailscale:
-    external: true
