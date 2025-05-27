@@ -1,4 +1,5 @@
 services:
+#Keycloak External Database (PostgreSQL)
   postgres:
     image: postgres:15
     container_name: keycloak_postgres
@@ -10,6 +11,7 @@ services:
       - keycloak_postgres_data:/var/lib/postgresql/data
     restart: always
 
+#Keycloak container configuration
   keycloak:
     image: quay.io/keycloak/keycloak:24.0.1
     container_name: keycloak
@@ -26,11 +28,12 @@ services:
       KEYCLOAK_ADMIN: admin
       KEYCLOAK_ADMIN_PASSWORD: admin
     ports:
-      - "8080:8080"  # Host port -> Container port
+      - "8080:8080" 
     depends_on:
       - postgres
     restart: always
 
+#postgres container volume
 volumes:
   keycloak_postgres_data:
     external: true
