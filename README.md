@@ -6,7 +6,7 @@
 
 # Getting Started
 ## VM1
-### Install K3s
+## Install K3s
 Kubernetes will be installed using K3s because of resource constraint
 ```
 curl -sfL https://get.k3s.io | INSTALL_K3S_EXEC="server \
@@ -22,7 +22,7 @@ note:
 - K3s by default are using traefik for ingress controller, since we will be using `istio ingress gateway` we will disable `traefik`
 
 
-### Setup VM or Server Environtment for kubernetes
+### Setup VM/Server Environtment for kubernetes
 ```
 sudo mkdir -p $HOME/.kube
 sudo cp /etc/rancher/k3s/k3s.yaml $HOME/.kube/config
@@ -37,3 +37,18 @@ kubectl get nodes -o wide
 ```
 note:
 - replace `~/.bashrc` with `/.zshrc` if you use Zsh
+
+## Configure Istio
+Download Istio: refer to  <a href="https://istio.io/latest/docs/setup/getting-started/">Istio Install</a>
+
+### Install Istio
+```
+istioctl install --set profile=minimal -y
+```
+### Enable Sidecar Injection for application namespace
+```
+kubectl create namespace application-namespace
+kubectl label namespace application-namespace istio-injection=enabled
+```
+### Configure Access for VM2(Keycloak) and VM3(Database)
+### Configure Istio for JWT Authentication with Keycloak
