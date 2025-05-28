@@ -1,0 +1,22 @@
+apiVersion: security.istio.io/v1
+kind: AuthorizationPolicy
+metadata:
+  name: gateway-access-policy
+  namespace: istio-system
+spec:
+  selector:
+    matchLabels:
+      istio: ingressgateway
+  rules:
+  - to:
+    - operation:
+        paths:
+          - "/auth/*"
+        methods: ["POST"]
+  - to:
+    - operation:
+        notPaths:
+          - "/auth/*"
+  - from:
+    - source:
+        requestPrincipals: ["*"]
