@@ -1,0 +1,19 @@
+apiVersion: networking.istio.io/v1beta1
+kind: VirtualService
+metadata:
+  name: auth-virtualservice
+  namespace: default
+spec:
+  gateways:
+    - istio-system/api-gateway
+  hosts:
+    - "*"
+  http:
+    - match:
+        - uri:
+            prefix: /api/v1/auth/
+      route:
+        - destination:
+            host: auth-service
+            port:
+              number: 8080
