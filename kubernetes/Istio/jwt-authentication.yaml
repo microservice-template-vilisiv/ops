@@ -8,5 +8,7 @@ spec:
     matchLabels:
       istio: ingressgateway
   jwtRules:
-  - issuer: "http://192.168.122.154:8080/realms/dev"
-    jwksUri: "http://192.168.122.154:8080/realms/dev/protocol/openid-connect/certs"
+  - issuer:  "http://100.114.236.95:8080/realms/dev"
+    jwksUri: "http://100.114.236.95:8080/realms/dev/protocol/openid-connect/certs"
+ # - issuer: "http://192.168.122.154:8080/realms/dev"
+ #   jwksUri: "http://192.168.122.154:8080/realms/dev/protocol/openid-connect/certs"

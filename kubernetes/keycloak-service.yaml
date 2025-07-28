@@ -17,7 +17,7 @@ metadata:
   namespace: istio-system
 subsets:
   - addresses:
-      - ip: "192.168.122.154"
+      - ip: "100.114.236.95"
     ports:
       - name: http
         port: 8080
