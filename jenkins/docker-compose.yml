@@ -1,0 +1,21 @@
+version: '3.8'
+
+services:
+  jenkins:
+    image: jenkins/jenkins:lts
+    container_name: jenkins
+    restart: unless-stopped
+    user: root  # Required for Docker socket access
+    ports:
+      - "9080:8080"
+      - "50000:50000"  # For agent communication
+    volumes:
+      - jenkins_home:/var/jenkins_home
+      - /var/run/docker.sock:/var/run/docker.sock  # Enable Docker-in-Docker
+      - ./scripts:/var/jenkins_scripts  # Optional: put helper scripts here
+    environment:
+      - JAVA_OPTS=-Djenkins.install.runSetupWizard=false
+
+volumes:
+  jenkins_home:
+
