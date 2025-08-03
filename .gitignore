@@ -1,0 +1,3 @@
+# Ignore Jenkins SSH keys and kubeconfig
+jenkins/jenkins_ssh/
+jenkins/jenkins-kubeconfig
