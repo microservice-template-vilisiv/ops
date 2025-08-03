@@ -13,10 +13,10 @@ spec:
         paths:
           - "/api/v1/auth/*"
         methods: ["POST"]
-  - to:
-    - operation:
-        notPaths:
-          - "/api/v1/auth/*"
+#  - to:
+#    - operation:
+#        notPaths:
+#          - "/api/v1/auth/*"
   - from:
     - source:
         requestPrincipals: ["*"]

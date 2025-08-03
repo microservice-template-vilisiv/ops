@@ -1,0 +1,31 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: education-service
+  namespace: default
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: education-service
+  template:
+    metadata:
+      labels:
+        app: education-service
+    spec:
+      containers:
+        - name: education-service
+          image: education-service:0.1
+          imagePullPolicy: IfNotPresent
+          ports:
+            - containerPort: 8080
+          envFrom:
+            - secretRef:
+                name: carebon-secret
+          resources:
+            requests:
+              memory: "256Mi"
+              cpu: "250m"
+            limits:
+              memory: "512Mi"
+              cpu: "500m"
