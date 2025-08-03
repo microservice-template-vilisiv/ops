@@ -13,10 +13,11 @@ spec:
       labels:
         app: education-service
     spec:
+      nodeName: service
       containers:
         - name: education-service
-          image: education-service:0.1
-          imagePullPolicy: IfNotPresent
+          image: education-service:PLACEHOLDER_VERSION
+          imagePullPolicy: Never
           ports:
             - containerPort: 8080
           envFrom:
