@@ -1,27 +1,10 @@
 import json
-import pg8000
+import requests
 
 # ----------------------------
 # Configuration
 # ----------------------------
-PG_CONFIG = {
-    "user": "crbusr",
-    "password": "crb42069$$",
-    "host": "pgbouncer",
-    "port": 5432,
-    "database": "crbdev"
-}
-
-# ----------------------------
-# Persistent DB Connection
-# ----------------------------
-_db_conn = None
-
-def get_db_connection():
-    global _db_conn
-    if _db_conn is None:
-        _db_conn = pg8000.connect(**PG_CONFIG)
-    return _db_conn
+HIKARI_URL = "http://hikari-cp:8088/query"  # use Docker network hostname
 
 # ----------------------------
 # Dynamic Trigger Function
@@ -49,16 +32,13 @@ def execute_dynamic_query(args):
     if cached:
         return cached
 
-    # Fetch from DB
+    # Fetch from HikariService via HTTP
     try:
-        conn = get_db_connection()
-        cur = conn.cursor()
-        cur.execute(query)
-        columns = [desc[0] for desc in cur.description]
-        rows = [dict(zip(columns, r)) for r in cur.fetchall()]
-        cur.close()
+        resp = requests.post(HIKARI_URL, data=query.encode("utf-8"), timeout=10)
+        resp.raise_for_status()
+        rows = resp.json()
     except Exception as e:
-        return f"DB fetch failed: {e}"
+        return f"DB fetch failed via HikariService: {e}"
 
     # Serialize result
     payload = json.dumps(rows, default=str)

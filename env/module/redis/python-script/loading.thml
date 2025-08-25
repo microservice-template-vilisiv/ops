@@ -1,0 +1,71 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<title>Opposite Rotation Loader (HTML Test)</title>
+<style>
+  body {
+    display:flex; justify-content:center; align-items:center;
+    height:100vh; background:#121212;
+  }
+
+  /* Outer circle */
+  .loader {
+    width:24px; height:24px;
+    border-radius:50%;
+    background:#000;
+    position:relative;
+    display:flex; justify-content:center; align-items:center;
+    animation:breatheOuter 1.5s ease-in-out infinite;
+  }
+
+  /* Inner (square that rotates; appears diamond during spin) */
+  .loader::before {
+    content:"";
+    width:12px; height:12px;
+    background:#fff;
+    position:absolute;
+    animation:breatheInner 1s ease-in-out infinite;
+  }
+
+  /* Dots made from one element + box-shadows */
+  .loader::after {
+    content:"";
+    position:absolute;
+    width:3px; height:3px; border-radius:50%;
+    background:#ffffffaa;
+    animation:dotBreathe 2s ease-in-out infinite;
+    /* 4 dots (corners) via shadows */
+    box-shadow:
+      -10px -10px #ffffffaa,
+       10px -10px #ffffffaa,
+      -10px  10px #ffffffaa,
+       10px  10px #ffffffaa;
+  }
+
+  /* Animations */
+  /* Outer: CW */
+  @keyframes breatheOuter {
+    0%   { transform: rotate(0deg)   scale(1); }
+    50%  { transform: rotate(180deg) scale(1.05); }
+    80% { transform: rotate(360deg) scale(1); }
+  }
+
+  /* Inner: CCW (note negative angles) */
+  @keyframes breatheInner {
+    0%   { transform: rotate(0deg)    scale(1); }
+    50%  { transform: rotate(-180deg) scale(1.15); }
+    80% { transform: rotate(-360deg) scale(1); }
+  }
+
+  /* Dots: breathe only (no rotation) */
+  @keyframes dotBreathe {
+    0%,100% { transform: scale(1); }
+    50%     { transform: scale(1.2); }
+  }
+</style>
+</head>
+<body>
+  <div class="loader"></div>
+</body>
+</html>
